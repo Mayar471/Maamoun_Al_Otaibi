@@ -1,0 +1,5 @@
+import type {Metadata} from "next";
+import SiteHeader from "../components/SiteHeader";
+import Footer from "../components/Footer";
+export const metadata:Metadata={title:"Contact"};
+export default function Contact(){return <main><SiteHeader/><section className="contact-page"><div className="contact-intro"><p className="kicker">Contact</p><h1>Let’s Connect</h1><p>For media, speaking, partnerships<br/>or other inquiries.</p><dl><div><dt>Email</dt><dd>hello@maamounalotaibi.com</dd></div><div><dt>Phone</dt><dd>+971 50 123 4567</dd></div><div><dt>Location</dt><dd>Dubai, United Arab Emirates</dd></div></dl></div><form className="contact-form"><label>Name<input name="name" autoComplete="name" required/></label><label>Email<input type="email" name="email" autoComplete="email" required/></label><label>Subject<input name="subject"/></label><label>Your message<textarea name="message" rows={6} required/></label><button className="gold-button" type="submit">Send message <span>→</span></button></form><div className="contact-photo" role="img" aria-label="Dubai skyline seen from an executive office"/></section><Footer/></main>}

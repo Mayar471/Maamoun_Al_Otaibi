@@ -1,0 +1,8 @@
+"use client";
+import {useState} from "react";
+import SiteHeader from "../components/SiteHeader";
+import Footer from "../components/Footer";
+const ventures=[
+ {name:"CRA",cat:"Real Estate",desc:"Consolidated Realtors & Alliance",image:"one"},{name:"UNIVES",cat:"Design & Creative",desc:"Creative & Communications Group",image:"two"},{name:"ONEPASS",cat:"Technology",desc:"Technology Platforms & Solutions",image:"three"},{name:"PROPTECH SOLUTIONS",cat:"Technology",desc:"Technology & Software",image:"four"},{name:"DESIGN LAB",cat:"Design & Creative",desc:"Design & Development Studio",image:"five"},{name:"CRA LIVING",cat:"Real Estate",desc:"Living & Experiential Development",image:"six"}];
+const filters=["All","Real Estate","Technology","Design & Creative"];
+export default function Ventures(){const[filter,setFilter]=useState("All");const shown=filter==="All"?ventures:ventures.filter(v=>v.cat===filter);return <main><SiteHeader/><section className="listing-head ventures-head"><p className="kicker">Enterprise & investment</p><h1>Ventures</h1><p>Businesses and investments across industries.</p></section><section className="listing-body dark"><div className="filters" role="group" aria-label="Filter ventures">{filters.map(f=><button className={filter===f?"active":""} onClick={()=>setFilter(f)} key={f}>{f}</button>)}</div><div className="venture-grid">{shown.map(v=><article className={`venture-card ${v.image}`} key={v.name}><div className="card-photo"/><div className="card-content"><span>{v.cat}</span><h2>{v.name}</h2><p>{v.desc}</p><a href="#">Visit website <b>→</b></a></div></article>)}</div><p className="development-note">◇ <span>More ventures and investments are in development.</span></p></section><Footer/></main>}

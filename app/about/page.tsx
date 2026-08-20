@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import SiteHeader from "../components/SiteHeader";
+import Footer from "../components/Footer";
+export const metadata:Metadata={title:"About"};
+const stats=[["30+","Years experience"],["20+","Businesses built"],["5","Industries"],["4","Books & IPs"]];
+const journey=[["1990s","Early exposure to business, real estate, and markets."],["2000s","Building and operating companies in real estate and construction."],["2010s","Expanding into technology, design, and new ventures."],["2020s","Creating intellectual properties and sharing insights with the industry."]];
+export default function About(){return <main><SiteHeader/><section className="inner-hero about-hero"><div className="inner-photo"/><div className="inner-shade"/><div className="inner-copy"><p className="kicker">The story behind the work</p><h1>About<br/>Ma’amoun.</h1><p className="hero-tagline">Operator. Observer. Thinker. Creator.</p><p>Three decades of building, operating, and investing across industries. A lifelong interest in people, systems, and the forces that shape decisions and outcomes.</p></div></section><section className="about-body"><div className="stats">{stats.map(([n,l])=><div key={l}><strong>{n}</strong><span>{l}</span></div>)}</div><div className="journey"><div><p className="section-kicker left">My journey</p><h2>Built over decades.<br/>Guided by curiosity.</h2></div><ol>{journey.map(([year,text])=><li key={year}><time>{year}</time><p>{text}</p></li>)}</ol></div></section><Footer/></main>}
