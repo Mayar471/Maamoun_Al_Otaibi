@@ -63,3 +63,20 @@
 .filters{scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
 @media(max-width:560px){.about-hero .inner-photo{background-size:100% auto;background-position:center top!important;background-repeat:no-repeat}.about-hero .inner-shade{background:linear-gradient(180deg,transparent 0%,rgba(5,6,6,.18) 22%,#050606 48%,#050606 100%)}}
 @media(max-width:560px){.about-hero .inner-photo{background-position:center 70px!important}}
+
+/* Mobile About portrait: a deliberate editorial crop instead of a stretched banner. */
+@media(max-width:560px){
+  .about-hero{min-height:760px}
+  .about-hero .inner-photo{
+    inset:86px 16px auto;
+    height:280px;
+    border:1px solid rgba(201,166,107,.2);
+    opacity:.88;
+    background-position:72% center!important;
+    background-size:cover;
+  }
+  .about-hero .inner-shade{
+    background:linear-gradient(180deg,rgba(5,6,6,.04) 0%,rgba(5,6,6,.08) 30%,#050606 48%,#050606 100%);
+  }
+  .about-hero .inner-copy{padding-top:405px}
+}
