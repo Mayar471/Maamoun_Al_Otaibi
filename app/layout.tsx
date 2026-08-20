@@ -20,9 +20,10 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
     images: [{
-      url: "/og.png",
-      width: 1728,
-      height: 904,
+      url: "/og-share-v2.jpg",
+      width: 1200,
+      height: 630,
+      type: "image/jpeg",
       alt: "Ma’amoun Al Otaibi — Entrepreneur, Author, Creator",
     }],
   },
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/og.png"],
+    images: ["/og-share-v2.jpg"],
   },
 };
 
