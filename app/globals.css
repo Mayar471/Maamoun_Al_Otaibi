@@ -26,3 +26,25 @@
 @media(max-width:900px){.site-header .brand,.site-header .menu-button{z-index:1001}}
 @media(max-width:900px){.mobile-nav{width:100%}.card-photo{background-size:280% auto}.venture-card.one .card-photo{background-position:0 48%}.venture-card.two .card-photo{background-position:50% 48%}.venture-card.three .card-photo{background-position:100% 48%}.venture-card.four .card-photo{background-position:0 83%}.venture-card.five .card-photo{background-position:50% 83%}.venture-card.six .card-photo{background-position:100% 83%}}
 .card-content .card-link{color:var(--gold);font-size:9px;letter-spacing:.13em;text-transform:uppercase}
+/* Clean production imagery: generated assets contain no embedded UI or typography. */
+.about-hero .inner-photo{background-image:url('/images/about-hero-v2.png');background-position:right center;transform:none;filter:saturate(.82) contrast(1.04)}
+.writings-hero>div:first-child{background-image:url('/images/writings-hero-v2.png');background-position:right center;transform:none;filter:saturate(.84) contrast(1.04)}
+.media-hero .inner-photo{background-image:url('/images/media-hero-v2.png');background-position:right center;transform:none;filter:saturate(.78) contrast(1.08)}
+.media-hero .inner-copy h1{line-height:.92;margin-bottom:28px}.media-hero .gold-rule{margin-top:0}
+.contact-page{background:linear-gradient(90deg,rgba(8,9,9,.98) 0%,rgba(8,9,9,.88) 54%,rgba(8,9,9,.18) 78%),url('/images/contact-hero-v2.png') center/cover no-repeat}
+.listing-head::before{background:radial-gradient(circle at 78% 36%,rgba(201,166,107,.12),transparent 28%),linear-gradient(120deg,#070808 0%,#0d0e0e 55%,#15130f 100%);opacity:1;transform:none}
+.listing-head::after{background:linear-gradient(90deg,#050606 0%,rgba(5,6,6,.82) 58%,rgba(5,6,6,.34))}
+.card-photo{background-image:linear-gradient(132deg,transparent 0 36%,rgba(201,166,107,.09) 36.2% 36.8%,transparent 37% 100%),linear-gradient(38deg,#080909,#171716);background-size:100% 100%;background-position:center;opacity:1;filter:none}
+.venture-card.two .card-photo{background-image:repeating-linear-gradient(90deg,transparent 0 32px,rgba(201,166,107,.06) 33px 34px),linear-gradient(145deg,#080909,#181510)}
+.venture-card.three .card-photo{background-image:radial-gradient(circle at 76% 22%,rgba(201,166,107,.14),transparent 25%),linear-gradient(45deg,#080909,#111414)}
+.venture-card.four .card-photo{background-image:linear-gradient(118deg,transparent 0 52%,rgba(201,166,107,.08) 52.2% 52.8%,transparent 53%),linear-gradient(28deg,#070808,#151617)}
+.venture-card.five .card-photo{background-image:repeating-linear-gradient(135deg,transparent 0 28px,rgba(255,255,255,.025) 29px 30px),linear-gradient(135deg,#080909,#191713)}
+.venture-card.six .card-photo{background-image:radial-gradient(ellipse at 75% 72%,rgba(201,166,107,.13),transparent 34%),linear-gradient(155deg,#070808,#131313)}
+@media(max-width:900px){.card-photo,.venture-card.one .card-photo,.venture-card.two .card-photo,.venture-card.three .card-photo,.venture-card.four .card-photo,.venture-card.five .card-photo,.venture-card.six .card-photo{background-size:100% 100%;background-position:center}.contact-page{background:#080909}}
+@media(max-width:560px){.about-hero .inner-photo{background-position:72% center!important;transform:none}.writings-hero>div:first-child{background-position:72% center;transform:none}.media-hero .inner-photo{background-position:76% center!important;transform:none}.media-hero .inner-copy{padding-top:330px}.media-hero .inner-copy h1{font-size:56px;line-height:.94;margin-bottom:22px}}
+.about-hero .inner-photo{background-size:auto 100%;background-repeat:no-repeat;background-color:#050606}
+.writings-hero h1{margin-bottom:22px}.writings-hero section>p:last-child{margin-top:0}
+@media(max-width:560px){.about-hero .inner-photo{background-size:auto 100%;background-position:right center!important}}
+.filters{scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
+@media(max-width:560px){.about-hero .inner-photo{background-size:100% auto;background-position:center top!important;background-repeat:no-repeat}.about-hero .inner-shade{background:linear-gradient(180deg,transparent 0%,rgba(5,6,6,.18) 22%,#050606 48%,#050606 100%)}}
+@media(max-width:560px){.about-hero .inner-photo{background-position:center 70px!important}}
