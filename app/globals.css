@@ -42,6 +42,21 @@
 .venture-card.six .card-photo{background-image:radial-gradient(ellipse at 75% 72%,rgba(201,166,107,.13),transparent 34%),linear-gradient(155deg,#070808,#131313)}
 @media(max-width:900px){.card-photo,.venture-card.one .card-photo,.venture-card.two .card-photo,.venture-card.three .card-photo,.venture-card.four .card-photo,.venture-card.five .card-photo,.venture-card.six .card-photo{background-size:100% 100%;background-position:center}.contact-page{background:#080909}}
 @media(max-width:560px){.about-hero .inner-photo{background-position:72% center!important;transform:none}.writings-hero>div:first-child{background-position:72% center;transform:none}.media-hero .inner-photo{background-position:76% center!important;transform:none}.media-hero .inner-copy{padding-top:330px}.media-hero .inner-copy h1{font-size:56px;line-height:.94;margin-bottom:22px}}
+
+/* Keep the speaking microphone elegant and proportional at every viewport. */
+.media-hero .inner-photo{
+  background-color:#050606;
+  background-position:90% center;
+  background-repeat:no-repeat;
+  background-size:auto 72%;
+}
+
+@media(max-width:560px){
+  .media-hero .inner-photo{
+    background-position:80% 78px!important;
+    background-size:auto 42%;
+  }
+}
 .about-hero .inner-photo{background-size:auto 100%;background-repeat:no-repeat;background-color:#050606}
 .writings-hero h1{margin-bottom:22px}.writings-hero section>p:last-child{margin-top:0}
 @media(max-width:560px){.about-hero .inner-photo{background-size:auto 100%;background-position:right center!important}}
