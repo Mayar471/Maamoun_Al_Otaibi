@@ -25,3 +25,4 @@
 @media(max-width:900px){.mobile-nav{position:absolute;inset:74px 0 auto;width:100vw;height:calc(100svh - 74px);z-index:0}}
 @media(max-width:900px){.site-header .brand,.site-header .menu-button{z-index:1001}}
 @media(max-width:900px){.mobile-nav{width:100%}.card-photo{background-size:280% auto}.venture-card.one .card-photo{background-position:0 48%}.venture-card.two .card-photo{background-position:50% 48%}.venture-card.three .card-photo{background-position:100% 48%}.venture-card.four .card-photo{background-position:0 83%}.venture-card.five .card-photo{background-position:50% 83%}.venture-card.six .card-photo{background-position:100% 83%}}
+.card-content .card-link{color:var(--gold);font-size:9px;letter-spacing:.13em;text-transform:uppercase}
