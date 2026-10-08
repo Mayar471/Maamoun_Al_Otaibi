@@ -3,6 +3,7 @@ import { credentials, isAdmin } from "../cms/auth";
 import { readSnapshot } from "../cms/storage";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import { recoveryConfig } from "../cms/recovery";
 import "./admin.css";
 import "./appearance.css";
 import { cookies } from "next/headers";
@@ -12,6 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export default async function Admin() {
   const configured = !!credentials();
-  if (!configured || !await isAdmin()) return <Login configured={configured} />;
+  if (!configured || !await isAdmin()) return <Login configured={configured} recoveryEnabled={!!recoveryConfig()} />;
   return <Dashboard initial={await readSnapshot(true)} />;
 }

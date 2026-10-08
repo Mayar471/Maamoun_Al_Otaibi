@@ -158,4 +158,21 @@ test(`CMS integration against isolated ${nodeStorage ? "SQLite/filesystem" : "D1
     cookie = "";
     assert.equal((await call("/api/cms/content")).status, 401);
   });
+  await t.test("changes password only with valid session and current password", async () => {
+    const values = { action: "change", currentPassword: password, password: "new-integration-password-123", confirmPassword: "new-integration-password-123" };
+    assert.equal((await call("/api/cms/password", "POST", values)).status, 401);
+    const login = await call("/api/cms/session", "POST", { password });
+    assert.equal(login.status, 200);
+    cookie = login.headers.get("set-cookie").split(";")[0];
+    const oldCookie = cookie;
+    assert.equal((await call("/api/cms/password", "POST", values, { headers: { Origin: "https://example.com" } })).status, 403);
+    assert.equal((await call("/api/cms/password", "POST", { ...values, confirmPassword: "mismatch-password-123" })).status, 400);
+    assert.equal((await call("/api/cms/password", "POST", { ...values, currentPassword: "wrong-password-123" })).status, 401);
+    assert.equal((await call("/api/cms/password", "POST", values)).status, 200);
+    assert.equal((await call("/api/cms/content", "GET", undefined, { headers: { Cookie: oldCookie } })).status, 401);
+    cookie = "";
+    assert.equal((await call("/api/cms/session", "POST", { password })).status, 401);
+    assert.equal((await call("/api/cms/session", "POST", { password: values.password })).status, 200);
+    assert.equal((await call("/api/cms/password", "POST", { action: "request", email: "attacker@example.com" })).status, 503);
+  });
 });

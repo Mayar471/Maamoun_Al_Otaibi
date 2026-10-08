@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 import { initialContent, type Content, type Snapshot } from "./model";
 
 export type MediaRow = { id: string; name: string; type: string; size: number; createdAt: string };
-export const bindings = env as Cloudflare.Env & { CMS_ADMIN_PASSWORD?: string; CMS_SESSION_SECRET?: string };
+export const bindings = env as Cloudflare.Env & { CMS_ADMIN_PASSWORD?: string; CMS_SESSION_SECRET?: string; CMS_ADMIN_EMAIL?: string; RESEND_API_KEY?: string; CMS_EMAIL_FROM?: string };
 
 export function database() {
   if (!bindings.DB) throw new Error("قاعدة بيانات CMS غير متاحة. يجب ربط DB.");
@@ -12,6 +12,8 @@ export function database() {
 export async function initialize() {
   const db = database();
   await db.batch([
+    db.prepare("CREATE TABLE IF NOT EXISTS cms_admin_auth (id TEXT PRIMARY KEY, password_hash TEXT NOT NULL, bootstrap_tag TEXT NOT NULL)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS cms_password_recovery (id TEXT PRIMARY KEY, request_id TEXT NOT NULL, code_hash TEXT NOT NULL, auth_tag TEXT NOT NULL, expires_at INTEGER NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, sent INTEGER NOT NULL DEFAULT 0, used INTEGER NOT NULL DEFAULT 0, next_request_at INTEGER NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS cms_content (id TEXT PRIMARY KEY, content TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0, updated_at TEXT NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS cms_media (id TEXT PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL, size INTEGER NOT NULL, created_at TEXT NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS cms_login_attempts (id TEXT PRIMARY KEY, attempts INTEGER NOT NULL, expires_at INTEGER NOT NULL)"),
@@ -57,11 +59,13 @@ export function mediaBucket() {
   return bindings.MEDIA;
 }
 
-export async function allowLogin() {
+export async function allowRate(id: string, limit: number, windowMs: number) {
   await initialize();
   const now = Date.now();
   // A durable global limit also protects local previews where trusted client IPs are unavailable.
-  const result = await database().prepare("INSERT INTO cms_login_attempts (id, attempts, expires_at) VALUES ('admin', 1, ?) ON CONFLICT(id) DO UPDATE SET attempts = CASE WHEN expires_at < ? THEN 1 ELSE attempts + 1 END, expires_at = CASE WHEN expires_at < ? THEN excluded.expires_at ELSE expires_at END RETURNING attempts")
-    .bind(now + 15 * 60 * 1000, now, now).first<{ attempts: number }>();
-  return (result?.attempts ?? 11) <= 10;
+  const result = await database().prepare("INSERT INTO cms_login_attempts (id, attempts, expires_at) VALUES (?, 1, ?) ON CONFLICT(id) DO UPDATE SET attempts = CASE WHEN expires_at < ? THEN 1 ELSE attempts + 1 END, expires_at = CASE WHEN expires_at < ? THEN excluded.expires_at ELSE expires_at END RETURNING attempts")
+    .bind(id, now + windowMs, now, now).first<{ attempts: number }>();
+  return (result?.attempts ?? limit + 1) <= limit;
 }
+
+export function allowLogin() { return allowRate("admin", 10, 15 * 60 * 1000); }

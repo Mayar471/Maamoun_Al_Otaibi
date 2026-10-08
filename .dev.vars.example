@@ -1,3 +1,9 @@
 # Copy to .dev.vars and replace both placeholders with unique secrets.
 CMS_ADMIN_PASSWORD=
 CMS_SESSION_SECRET=
+
+# Recovery sends only to this server-configured address. Do not use a public contact field.
+CMS_ADMIN_EMAIL=
+# Resend: set a Sending access API key and a permitted sender.
+RESEND_API_KEY=
+CMS_EMAIL_FROM=

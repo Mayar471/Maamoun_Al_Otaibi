@@ -1,32 +1,15 @@
 import { cookies } from "next/headers";
-import { bindings } from "./storage";
+import { credentials, sessionKey, passwordContext } from "./password";
+export { credentials, checkPassword } from "./password";
 
 export const COOKIE = "maamoun_cms";
 export const SESSION_SECONDS = 8 * 60 * 60;
 const encoder = new TextEncoder();
 const hex = (buffer: ArrayBuffer) => Array.from(new Uint8Array(buffer), b => b.toString(16).padStart(2, "0")).join("");
 
-export function credentials() {
-  const password = bindings.CMS_ADMIN_PASSWORD ?? process.env.CMS_ADMIN_PASSWORD;
-  const secret = bindings.CMS_SESSION_SECRET ?? process.env.CMS_SESSION_SECRET;
-  if (!password || password.length < 12 || !secret || secret.length < 32) return null;
-  return { password, secret };
-}
-async function key() {
-  const config = credentials();
-  if (!config) throw new Error("تسجيل الدخول غير مهيّأ. اضبط كلمة المرور وسر الجلسة في إعدادات السيرفر.");
-  // Password changes invalidate existing sessions as well as secret changes.
-  return crypto.subtle.importKey("raw", encoder.encode(`${config.secret}:${config.password}`), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]);
-}
-export async function checkPassword(value: string) {
-  const config = credentials();
-  if (!config) return false;
-  const signature = await crypto.subtle.sign("HMAC", await key(), encoder.encode(config.password));
-  return crypto.subtle.verify("HMAC", await key(), signature, encoder.encode(value));
-}
-export async function createSession() {
+export async function createSession(context?: Awaited<ReturnType<typeof passwordContext>>) {
   const value = `${Math.floor(Date.now() / 1000) + SESSION_SECONDS}.${crypto.randomUUID()}`;
-  return `${value}.${hex(await crypto.subtle.sign("HMAC", await key(), encoder.encode(value)))}`;
+  return `${value}.${hex(await crypto.subtle.sign("HMAC", await sessionKey(context), encoder.encode(value)))}`;
 }
 export async function validSession(token?: string) {
   if (!token || !credentials()) return false;
@@ -36,7 +19,7 @@ export async function validSession(token?: string) {
   const now = Math.floor(Date.now() / 1000);
   if (expiry <= now || expiry > now + SESSION_SECONDS) return false;
   const bytes = new Uint8Array(parts[2].match(/../g)!.map(part => parseInt(part, 16)));
-  return crypto.subtle.verify("HMAC", await key(), bytes, encoder.encode(`${parts[0]}.${parts[1]}`));
+  return crypto.subtle.verify("HMAC", await sessionKey(), bytes, encoder.encode(`${parts[0]}.${parts[1]}`));
 }
 export async function isAdmin() { return validSession((await cookies()).get(COOKIE)?.value); }
 

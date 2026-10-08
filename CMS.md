@@ -106,3 +106,13 @@ development server. It does not modify the normal local CMS content.
 
 References: [D1 API](https://developers.cloudflare.com/d1/worker-api/) and
 [route handlers](https://nextjs.org/docs/app/api-reference/file-conventions/route).
+
+## Password changes and email recovery
+
+In Site settings, open Change password, enter the current password and the new password twice. Passwords must be 12–128 characters. Old sessions end after a successful change. A salted, server-peppered PBKDF2 hash is stored in D1/SQLite; passwords and recovery codes are never stored in plain text in the database. WebCrypto uses 100,000 PBKDF2-SHA256 iterations to respect the Workers runtime cap. The pepper is the server CMS_SESSION_SECRET.
+
+The Forgot password option sends an eight-digit code exclusively to CMS_ADMIN_EMAIL configured on the server. The request cannot select a recipient. Codes expire after 10 minutes, allow at most five verification attempts, and are consumed atomically on a successful reset. Sending is limited to three requests per 15 minutes and at least one minute between codes. A reset invalidates old sessions and earlier codes, and returns the administrator to the regular login screen. A notification is sent after an email reset.
+
+Configure CMS_ADMIN_EMAIL, RESEND_API_KEY (secret, Sending access), and CMS_EMAIL_FROM using the hosting environment settings; locally use the ignored .dev.vars file. Email recovery stays unavailable until all three are set. For this single-recipient trial, create the Resend account with the manager email and use onboarding@resend.dev as sender. Resend's default sender can deliver only to the account owner's email. To send to a different address, verify a sender domain first. See https://resend.com/docs/knowledge-base/403-error-resend-dev-domain.
+
+The environment CMS_ADMIN_PASSWORD remains a bootstrap/break-glass password until the password is changed in the CMS. Afterwards the stored hash is authoritative. To regain access without email, change CMS_ADMIN_PASSWORD to a NEW unique password in the hosting environment and redeploy; this invalidates the stored override and recovery codes. Changing only the local file does not update production. Keep the new bootstrap value different from every prior one.

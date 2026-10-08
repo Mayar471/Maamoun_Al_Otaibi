@@ -17,7 +17,8 @@
     "test:cms:node": "node scripts/node-mode.mjs test",
     "types:cloudflare": "wrangler types worker-configuration.d.ts --include-runtime --config dist/server/wrangler.json",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "test:security": "node --test tests/password-security.test.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

@@ -48,3 +48,5 @@ html[data-cms-theme="light"] .cms-sidebar-bottom { border-color:#b9c9b3; }
   .cms-preferences { gap:9px; }
   .cms-language { gap:6px; }
 }
+
+.cms-text-button{background:transparent;color:var(--cms-ink);text-decoration:underline;text-underline-offset:4px;padding:8px 0}.cms-recovery{margin-top:18px}.cms-recovery-body{border-top:1px solid var(--cms-line);margin-top:12px;padding-top:12px}.cms-password-settings{margin-bottom:24px}.cms-password-settings summary{cursor:pointer;font-size:17px;font-weight:600}.cms-password-settings form{display:grid;gap:16px;max-width:430px;margin-top:20px}.cms-password-settings label{display:grid;gap:7px}.cms-password-settings input{padding:12px;border:1px solid var(--cms-line);border-radius:6px;background:var(--cms-input);color:var(--cms-ink)}.cms-password-hint{font-size:12px;color:var(--cms-muted);margin:5px 0}.cms-password-settings .cms-primary{justify-self:start}
