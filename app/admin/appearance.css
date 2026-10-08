@@ -1,0 +1,50 @@
+.cms { --cms-surface:#fff; --cms-raised:#fafbf8; --cms-input:#fafbf9; --cms-record:#f9faf7; --cms-image:#f0f2ec; --cms-badge:#e9eee4; color-scheme:light; }
+html[data-cms-theme="dark"] .cms { --cms-bg:#111b17; --cms-ink:#e6ede8; --cms-muted:#a7b8ad; --cms-line:#34483e; --cms-green:#31745b; --cms-surface:#1c2b23; --cms-raised:#19271f; --cms-input:#14221b; --cms-record:#17251e; --cms-image:#25382c; --cms-badge:#304a39; color-scheme:dark; }
+.cms .cms-panel,.cms .cms-secondary,.cms .cms-login section,.cms .cms-record-heading button { background:var(--cms-surface); color:var(--cms-ink); }
+.cms .cms-summary>div { background:var(--cms-raised); }
+.cms .cms-field input,.cms .cms-field textarea,.cms.cms-login input { background:var(--cms-input); border-color:var(--cms-line); }
+.cms .cms-record { background:var(--cms-record); }
+.cms .cms-image-preview,.cms .cms-media-card>img { background:var(--cms-image); }
+.cms .cms-count { background:var(--cms-badge); color:var(--cms-muted); }
+.cms .cms-field label,.cms .cms-footnote,.cms .cms-status,.cms .cms-back { color:var(--cms-muted); }
+.cms .cms-record-heading .cms-delete { color:#b46f5f; }
+.cms-sidebar { right:auto; left:auto; inset-inline-start:0; }
+.cms-workspace { margin-right:0; margin-left:0; margin-inline-start:242px; }
+.cms-sidebar nav button,.cms-sidebar-bottom button { text-align:start; }
+.cms-count { margin-right:0; margin-inline-start:10px; }
+.cms-eyebrow { direction:inherit; }
+.cms-preferences { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.cms-language { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--cms-muted); }
+.cms-language select { font:inherit; padding:8px 10px; border:1px solid var(--cms-line); border-radius:7px; background:var(--cms-surface); color:var(--cms-ink); cursor:pointer; }
+.cms-theme-options { display:flex; padding:3px; border:1px solid var(--cms-line); border-radius:8px; background:var(--cms-input); gap:3px; }
+.cms-theme-options button { display:flex; align-items:center; gap:6px; padding:6px 9px; border-radius:5px; background:transparent; color:var(--cms-muted); font-size:11px; }
+.cms-theme-options button[aria-pressed="true"] { background:var(--cms-surface); color:var(--cms-ink); box-shadow:0 1px 4px #0001; }
+.cms-topbar { gap:18px; flex-wrap:wrap; }
+.cms-topbar-options { display:flex; align-items:end; gap:12px; flex-direction:column; }
+.cms.cms-login .cms-preferences { margin-bottom:28px; }
+.cms.cms-login section { background:var(--cms-surface); }
+html[data-cms-theme="dark"] .cms.cms-login { background:radial-gradient(ellipse at top,#243c2c,transparent 65%),var(--cms-bg); }
+html[data-cms-theme="dark"] .cms .cms-success:not(:empty) { background:#253f2f; color:#bbdfc7; }
+html[data-cms-theme="dark"] .cms .cms-error:not(:empty) { background:#452826; color:#efb8af; }
+html[data-cms-theme="dark"] .cms .cms-notice { background:#3d3824; color:#ddce99; }
+html[data-cms-theme="dark"] .cms-sidebar { background:#0c1711; }
+html[data-cms-theme="dark"] .cms .cms-panel-number { color:#819883; }
+html[data-cms-theme="light"] .cms-sidebar { background:#e4ebe1; color:#274332; border-inline-end:1px solid var(--cms-line); }
+html[data-cms-theme="light"] .cms-sidebar nav button { color:#314938; }
+html[data-cms-theme="light"] .cms-sidebar nav button:hover { background:#d8e2d4; }
+html[data-cms-theme="light"] .cms-sidebar nav button.active { background:#cbdcc8; color:#173820; }
+html[data-cms-theme="light"] .cms-sidebar nav button.active span { color:#6c572f; }
+html[data-cms-theme="light"] .cms-sidebar .cms-monogram { color:#7f6537; border-color:#96aa91; }
+html[data-cms-theme="light"] .cms-sidebar .cms-nav-label,
+html[data-cms-theme="light"] .cms-sidebar .cms-brand small,
+html[data-cms-theme="light"] .cms-sidebar nav button span,
+html[data-cms-theme="light"] .cms-sidebar-bottom button { color:#576b57; }
+html[data-cms-theme="light"] .cms-sidebar-bottom { border-color:#b9c9b3; }
+.cms-language select:focus-visible { outline:2px solid #91a98d; outline-offset:2px; }
+@media(max-width:1100px) { .cms-workspace { margin-inline-start:205px; } }
+@media(max-width:700px) {
+  .cms-workspace { margin-right:0; margin-inline-start:0; }
+  .cms-topbar-options { align-items:start; width:100%; }
+  .cms-preferences { gap:9px; }
+  .cms-language { gap:6px; }
+}

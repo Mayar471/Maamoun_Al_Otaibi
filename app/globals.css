@@ -76,3 +76,5 @@
   }
   .about-hero .inner-copy{padding:145px 24px 40px}
 }
+
+.cms-lines{white-space:pre-line}.collection-empty{padding:35px;color:#999}.cms-article{max-width:850px;margin:auto;padding:160px 28px 80px}.cms-article>a{color:var(--gold);font-size:12px}.cms-article .kicker{margin-top:40px}.cms-article h1{font-size:clamp(36px,5vw,65px);line-height:1.1;margin-bottom:35px}.cms-article>div{font-size:16px;line-height:1.9;color:#cec8bd;overflow-wrap:anywhere}.cms-preview-banner{position:fixed;bottom:14px;left:14px;right:14px;z-index:10000;background:#214b3b;color:#fff;padding:13px 20px;font:12px Tahoma,sans-serif;border-radius:8px}.cms-preview-banner a{text-decoration:underline;margin-right:16px}

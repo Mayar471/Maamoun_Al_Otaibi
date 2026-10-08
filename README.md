@@ -1,4 +1,35 @@
-# vinext-starter
+# Ma’amoun Al Otaibi
+
+Personal website built with React, vinext, and Vite. Pages live in `app/`,
+shared navigation and footer in `app/components/`, and images in `public/`.
+
+## Local development on Windows
+
+Requires Node.js `>=22.13.0`. From the repository folder in PowerShell:
+
+```powershell
+npm.cmd ci
+npm.cmd run dev
+```
+
+Open the local URL printed by the development server. To check a change:
+
+```powershell
+npm.cmd run build
+npm.cmd run lint
+```
+
+Use `npm.cmd` when PowerShell blocks the `npm.ps1` wrapper. The npm scripts
+also work on macOS and Linux using `npm`. Local Wrangler settings are
+configured in `vite.config.ts`.
+
+Open `/admin` for the Arabic content management dashboard. Configure local
+credentials in `.dev.vars` and see [CMS.md](CMS.md) for draft publishing, image
+uploads, Cloudflare storage, and Node/Render deployment with a persistent disk.
+Use `npm.cmd run dev:node` for SQLite and filesystem storage instead of D1/R2.
+`npm test` now builds the site and runs the CMS integration suite.
+
+## Original starter documentation
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
@@ -91,7 +122,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
+- `npm test`: build the site and verify CMS integration with isolated local storage
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More

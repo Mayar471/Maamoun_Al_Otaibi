@@ -3,6 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { SiteThemeToggle } from "./Preferences";
 
 const links = [
   ["/", "Home"], ["/about", "About"], ["/ventures", "Ventures"],
@@ -19,7 +20,7 @@ export default function SiteHeader() {
       <nav className="desktop-nav" aria-label="Primary navigation">
         {links.map(([href,label]) => <a className={path === href || (href !== "/" && path.startsWith(href)) ? "active" : ""} href={href} key={label}>{label}</a>)}
       </nav>
-      <button className="menu-button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)} type="button"><span /><span /></button>
+      <div className="header-actions"><SiteThemeToggle /><button className="menu-button" aria-label={open ? "Close navigation" : "Open navigation"} aria-expanded={open} onClick={() => setOpen(!open)} type="button"><span /><span /></button></div>
       <nav className="mobile-nav" aria-label="Mobile navigation">
         {links.map(([href,label],i) => <a href={href} key={label} onClick={() => setOpen(false)}><small>0{i+1}</small>{label}</a>)}
       </nav>

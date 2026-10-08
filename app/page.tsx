@@ -1,34 +1,10 @@
-import SiteHeader from "./components/SiteHeader";
+﻿import SiteHeader from "./components/SiteHeader";
 import Footer from "./components/Footer";
-
-const pillars = [
-  { icon: "Ⅰ", eyebrow: "Knowledge", title: "Principles of\nReal Estate", href: "/writings" },
-  { icon: "Ⅱ", eyebrow: "Philosophy", title: "The Unspoken\nGame Trilogy", href: "/about" },
-  { icon: "Ⅲ", eyebrow: "Power", title: "The Laws of\nReal Estate Power", href: "/writings" },
-  { icon: "Ⅳ", eyebrow: "Experience", title: "Deals — صفقات", href: "/ventures" },
-];
-
-export default function Home() {
-  return (
-    <main>
-      <SiteHeader />
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-image" role="img" aria-label="Ma'amoun Al Otaibi overlooking the Dubai skyline" /><div className="hero-shade" />
-        <div className="hero-content">
-          <p className="kicker">Entrepreneur · Author · Creator</p><h1 id="hero-title">MA’AMOUN<br />AL OTAIBI</h1><p className="hero-tagline">Entrepreneur. Author. Creator.</p>
-          <div className="ornament" aria-hidden="true"><span /><i /><span /></div>
-          <p className="hero-copy">Building businesses, systems, and original intellectual properties across real estate, technology, design, media and other ventures.</p>
-          <a className="outline-button" href="#creations">Discover my world <span aria-hidden="true">→</span></a>
-        </div>
-        <a className="scroll-cue" href="#creations" aria-label="Scroll to Maestro Creation Circle">Scroll <span>↓</span></a>
-      </section>
-      <section className="creation-circle" id="creations" aria-labelledby="creations-title">
-        <p className="section-kicker"><span /> Maestro Creation Circle <span /></p><h2 id="creations-title">Four Dimensions. One Vision.</h2>
-        <div className="pillars">
-          {pillars.map((pillar) => <a className="pillar" href={pillar.href} key={pillar.eyebrow}><span className="pillar-icon" aria-hidden="true">{pillar.icon}</span><span className="pillar-label">{pillar.eyebrow}</span><strong>{pillar.title.split("\n").map((line) => <span key={line}>{line}</span>)}</strong><span className="pillar-link">Explore <b aria-hidden="true">→</b></span></a>)}
-        </div>
-      </section>
-      <Footer />
-    </main>
-  );
+import { background } from "./cms/model";
+import { pageContent, PreviewBanner, type PageProps } from "./cms/public";
+export const dynamic = "force-dynamic";
+export default async function Home(props: PageProps) {
+  const { page, preview } = await pageContent("home", props);
+  const f = page.fields;
+  return <main><PreviewBanner visible={preview} /><SiteHeader /><section className="hero" aria-labelledby="hero-title"><div className="hero-image" style={background(f.image)} role="img" aria-label={f.title} /><div className="hero-shade" /><div className="hero-content"><p className="kicker">{f.kicker}</p><h1 id="hero-title" className="cms-lines">{f.title}</h1><p className="hero-tagline">{f.tagline}</p><div className="ornament" aria-hidden="true"><span /><i /><span /></div><p className="hero-copy">{f.copy}</p><a className="outline-button" href="#creations">{f.button}<span aria-hidden="true">→</span></a></div><a className="scroll-cue" href="#creations">Scroll <span>↓</span></a></section><section className="creation-circle" id="creations" aria-labelledby="creations-title"><p className="section-kicker"><span />{f.circleLabel}<span /></p><h2 id="creations-title">{f.circleTitle}</h2><div className="pillars">{page.lists.pillars.map(pillar => <a className="pillar" href={pillar.href || "#creations"} key={pillar.id}><span className="pillar-icon" aria-hidden="true">{pillar.icon}</span><span className="pillar-label">{pillar.eyebrow}</span><strong className="cms-lines">{pillar.title}</strong><span className="pillar-link">Explore <b aria-hidden="true">→</b></span></a>)}</div></section><Footer /></main>;
 }

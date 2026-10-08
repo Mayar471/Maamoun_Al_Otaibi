@@ -2,6 +2,7 @@ import { sites } from "@openai/sites-vite-plugin";
 import vinext from "vinext";
 import { defineConfig } from "vite";
 import hostingConfig from "./.openai/hosting.json";
+import { fileURLToPath } from "node:url";
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";
@@ -34,6 +35,7 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async () => {
+  const nodeStorage = process.env.CMS_STORAGE_DRIVER === "node";
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= "false";
@@ -41,19 +43,21 @@ export default defineConfig(async () => {
   process.env.MINIFLARE_REGISTRY_PATH ??= ".wrangler/registry";
 
   // Wrangler snapshots its log path while the Cloudflare plugin is imported.
-  const { cloudflare } = await import("@cloudflare/vite-plugin");
+  const cloudflarePlugin = nodeStorage ? [] : [(await import("@cloudflare/vite-plugin")).cloudflare({
+    persistState: process.env.CMS_TEST_STATE_PATH ? { path: process.env.CMS_TEST_STATE_PATH } : true,
+    viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
+    config: localBindingConfig,
+  })];
 
   return {
+    resolve: nodeStorage ? { alias: { "cloudflare:workers": fileURLToPath(new URL("./app/cms/node-bindings.ts", import.meta.url)) } } : undefined,
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
     plugins: [
       vinext(),
       sites(),
-      cloudflare({
-        viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
-        config: localBindingConfig,
-      }),
+      ...cloudflarePlugin,
     ],
   };
 });

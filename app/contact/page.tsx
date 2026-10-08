@@ -1,5 +1,13 @@
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 import SiteHeader from "../components/SiteHeader";
 import Footer from "../components/Footer";
-export const metadata:Metadata={title:"Contact"};
-export default function Contact(){return <main><SiteHeader/><section className="contact-page"><div className="contact-intro"><p className="kicker">Contact</p><h1>Let’s Connect</h1><p>For media, speaking, partnerships<br/>or other inquiries.</p><dl><div><dt>Email</dt><dd>hello@maamounalotaibi.com</dd></div><div><dt>Phone</dt><dd>+971 50 123 4567</dd></div><div><dt>Location</dt><dd>Dubai, United Arab Emirates</dd></div></dl></div><form className="contact-form"><label>Name<input name="name" autoComplete="name" required/></label><label>Email<input type="email" name="email" autoComplete="email" required/></label><label>Subject<input name="subject"/></label><label>Your message<textarea name="message" rows={6} required/></label><button className="gold-button" type="submit">Send message <span>→</span></button></form><div className="contact-photo" role="img" aria-label="Dubai skyline seen from an executive office"/></section><Footer/></main>}
+import ContactForm from "../components/ContactForm";
+import { background } from "../cms/model";
+import { pageContent, PreviewBanner, type PageProps } from "../cms/public";
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Contact", alternates: { canonical: "/contact" } };
+export default async function Contact(props: PageProps) {
+  const { page, preview } = await pageContent("contact", props);
+  const f = page.fields;
+  return <main><PreviewBanner visible={preview} /><SiteHeader /><section className="contact-page" style={f.image ? { backgroundImage: `var(--contact-shade), ${background(f.image)?.backgroundImage}` } : undefined}><div className="contact-intro"><p className="kicker">{f.kicker}</p><h1>{f.title}</h1><p className="cms-lines">{f.copy}</p><dl><div><dt>Email</dt><dd>{f.email}</dd></div><div><dt>Phone</dt><dd>{f.phone}</dd></div><div><dt>Location</dt><dd>{f.location}</dd></div></dl></div><ContactForm email={f.email} /><div className="contact-photo" role="img" aria-label="Dubai skyline seen from an executive office" /></section><Footer /></main>;
+}
