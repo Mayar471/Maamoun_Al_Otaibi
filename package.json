@@ -18,7 +18,7 @@
     "types:cloudflare": "wrangler types worker-configuration.d.ts --include-runtime --config dist/server/wrangler.json",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "test:security": "node --test tests/password-security.test.mjs"
+    "test:security": "node --test tests/password-security.test.mjs tests/gmail-smtp.test.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

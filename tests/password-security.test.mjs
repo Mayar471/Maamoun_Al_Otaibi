@@ -16,6 +16,7 @@ test("password changes and manager-only email recovery", async t => {
   process.env.CMS_ADMIN_PASSWORD = "initial-test-password-123";
   process.env.CMS_SESSION_SECRET = "test-only-secret-with-more-than-thirty-two-characters";
   process.env.CMS_ADMIN_EMAIL = "manager@example.com";
+  process.env.CMS_MAIL_PROVIDER = "resend";
   process.env.RESEND_API_KEY = "test-only-not-a-real-key";
   process.env.CMS_EMAIL_FROM = "CMS <cms@example.com>";
   const mails = [];
@@ -30,10 +31,10 @@ test("password changes and manager-only email recovery", async t => {
     return Response.json({ id: crypto.randomUUID() });
   };
   await writeFile(join(state, "headers.mjs"), "export async function cookies() { return { get() { return undefined; } }; }");
-  for (const name of ["model", "node-bindings", "storage", "password", "auth", "recovery"]) {
+  for (const name of ["model", "node-bindings", "storage", "password", "auth", "gmail-smtp", "node-sockets", "recovery"]) {
     const source = await readFile(resolve("app/cms/" + name + ".ts"), "utf8");
     let output = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
-    output = output.replace(/from "\.\/([^".]+)"/g, 'from "./$1.mjs"').replace('from "cloudflare:workers"', 'from "./node-bindings.mjs"').replace('from "next/headers"', 'from "./headers.mjs"');
+    output = output.replace(/from "\.\/([^".]+)"/g, 'from "./$1.mjs"').replace('from "cloudflare:workers"', 'from "./node-bindings.mjs"').replace('from "cloudflare:sockets"', 'from "./node-sockets.mjs"').replace('from "next/headers"', 'from "./headers.mjs"');
     await writeFile(join(state, name + ".mjs"), output);
   }
   const moduleAt = name => import(pathToFileURL(join(state, name + ".mjs")));
@@ -131,5 +132,16 @@ test("password changes and manager-only email recovery", async t => {
     assert.equal(await password.checkPassword("new-bootstrap-password-123"), true);
     assert.equal(await password.checkPassword("reset-test-password-789"), false);
     assert.equal(await auth.validSession(session), false);
+  });
+  await t.test("Gmail configuration never falls back to another sender when credentials are absent", async () => {
+    storage.bindings.CMS_MAIL_PROVIDER = "gmail";
+    storage.bindings.CMS_SMTP_USER = "sender@gmail.com";
+    storage.bindings.CMS_SMTP_PASSWORD = "";
+    assert.equal(recovery.recoveryConfig(), null);
+    storage.bindings.CMS_SMTP_PASSWORD = "abcd efgh ijkl mnop";
+    assert.equal(recovery.recoveryConfig().provider, "gmail");
+    assert.equal(recovery.recoveryConfig().user, "sender@gmail.com");
+    storage.bindings.CMS_SMTP_USER = "sender@gmail.com\r\nBcc: attacker@example.com";
+    assert.equal(recovery.recoveryConfig(), null);
   });
 });

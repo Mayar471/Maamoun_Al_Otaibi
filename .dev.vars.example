@@ -7,3 +7,8 @@ CMS_ADMIN_EMAIL=
 # Resend: set a Sending access API key and a permitted sender.
 RESEND_API_KEY=
 CMS_EMAIL_FROM=
+
+# Gmail SMTP alternative: select gmail explicitly; App Password needs Google 2-Step Verification.
+CMS_MAIL_PROVIDER=gmail
+CMS_SMTP_USER=
+CMS_SMTP_PASSWORD=

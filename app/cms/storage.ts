@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 import { initialContent, type Content, type Snapshot } from "./model";
 
 export type MediaRow = { id: string; name: string; type: string; size: number; createdAt: string };
-export const bindings = env as Cloudflare.Env & { CMS_ADMIN_PASSWORD?: string; CMS_SESSION_SECRET?: string; CMS_ADMIN_EMAIL?: string; RESEND_API_KEY?: string; CMS_EMAIL_FROM?: string };
+export const bindings = env as Cloudflare.Env & { CMS_ADMIN_PASSWORD?: string; CMS_SESSION_SECRET?: string; CMS_ADMIN_EMAIL?: string; RESEND_API_KEY?: string; CMS_EMAIL_FROM?: string; CMS_MAIL_PROVIDER?: string; CMS_SMTP_USER?: string; CMS_SMTP_PASSWORD?: string };
 
 export function database() {
   if (!bindings.DB) throw new Error("قاعدة بيانات CMS غير متاحة. يجب ربط DB.");

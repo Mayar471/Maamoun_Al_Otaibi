@@ -50,7 +50,7 @@ export default defineConfig(async () => {
   })];
 
   return {
-    resolve: nodeStorage ? { alias: { "cloudflare:workers": fileURLToPath(new URL("./app/cms/node-bindings.ts", import.meta.url)) } } : undefined,
+    resolve: nodeStorage ? { alias: { "cloudflare:workers": fileURLToPath(new URL("./app/cms/node-bindings.ts", import.meta.url)), "cloudflare:sockets": fileURLToPath(new URL("./app/cms/node-sockets.ts", import.meta.url)) } } : undefined,
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,

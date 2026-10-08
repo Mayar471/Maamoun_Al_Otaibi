@@ -1,18 +1,33 @@
+import { sendGmail } from "./gmail-smtp";
 import { ApiError } from "./auth";
 import { bindings, database, allowRate, initialize } from "./storage";
 import { digest, equal, passwordContext, hashPassword } from "./password";
 export function recoveryConfig() {
   const email = (bindings.CMS_ADMIN_EMAIL ?? process.env.CMS_ADMIN_EMAIL ?? "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
+  const provider = bindings.CMS_MAIL_PROVIDER ?? process.env.CMS_MAIL_PROVIDER ?? "resend";
+  if (provider === "gmail") {
+    const user = (bindings.CMS_SMTP_USER ?? process.env.CMS_SMTP_USER ?? "").trim().toLowerCase();
+    const appPassword = (bindings.CMS_SMTP_PASSWORD ?? process.env.CMS_SMTP_PASSWORD ?? "").replace(/\s/g, "");
+    return /^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@gmail\.com$/i.test(user) && /^[a-z0-9]{16}$/i.test(appPassword) ? { provider: "gmail" as const, email, user, appPassword } : null;
+  }
+  if (provider !== "resend") return null;
   const apiKey = bindings.RESEND_API_KEY ?? process.env.RESEND_API_KEY;
   const from = bindings.CMS_EMAIL_FROM ?? process.env.CMS_EMAIL_FROM;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && apiKey && from ? { email, apiKey, from } : null;
+  return apiKey && from ? { provider: "resend" as const, email, apiKey, from } : null;
 }
 async function sendEmail(subject: string, text: string, id: string) {
   const config = recoveryConfig();
   if (!config) throw new ApiError("استرجاع كلمة المرور عبر البريد غير مهيّأ بعد.", 503);
   // The recipient comes exclusively from server configuration, never from the request.
-  const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: "Bearer " + config.apiKey, "Content-Type": "application/json", "Idempotency-Key": id }, body: JSON.stringify({ from: config.from, to: [config.email], subject, text }), signal: AbortSignal.timeout(15000) });
-  if (!response.ok) throw new ApiError("تعذّر إرسال البريد. حاول لاحقاً أو تواصل مع مسؤول الموقع.", 502);
+  try {
+    if (config.provider === "gmail") { await sendGmail(config, subject, text, id); return; }
+    const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: "Bearer " + config.apiKey, "Content-Type": "application/json", "Idempotency-Key": id }, body: JSON.stringify({ from: config.from, to: [config.email], subject, text }), signal: AbortSignal.timeout(15000) });
+    if (!response.ok) throw new Error("Mail provider rejected delivery");
+  } catch {
+    // Never log credentials, recovery codes, or SMTP authentication transcripts.
+    throw new ApiError("تعذّر إرسال البريد. حاول لاحقاً أو تواصل مع مسؤول الموقع.", 502);
+  }
 }
 function randomCode() {
   const value = new Uint32Array(1);
